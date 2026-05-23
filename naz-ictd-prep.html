@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NAZ ICT4D Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0e1012;
+  --surface: #161a1e;
+  --surface2: #1e2429;
+  --border: #2a3340;
+  --amber: #f5a623;
+  --amber-dim: #c07d10;
+  --green: #3ecf8e;
+  --red: #f06a6a;
+  --blue: #4da6ff;
+  --text: #e8ecf0;
+  --muted: #7a8a99;
+  --accent: #f5a623;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Lora', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+/* ─── HEADER ─── */
+header {
+  background: linear-gradient(135deg, #111820 0%, #0e1a12 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: .08em; color: var(--amber); }
+.logo span { color: var(--muted); font-weight: 400; }
+.progress-bar-wrap { flex: 1; max-width: 200px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 1.5rem; }
+.progress-bar-fill { height: 100%; background: var(--amber); border-radius: 2px; transition: width .4s ease; }
+.header-score { font-family: 'Syne', sans-serif; font-size: .8rem; color: var(--muted); }
+.header-score strong { color: var(--green); }
+
+/* ─── LAYOUT ─── */
+.shell { display: flex; height: calc(100vh - 56px); }
+.sidebar {
+  width: 230px; min-width: 230px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+.sidebar-title { font-family: 'Syne', sans-serif; font-size: .65rem; letter-spacing: .15em; color: var(--muted); padding: .4rem 1.2rem .8rem; text-transform: uppercase; }
+.nav-item {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .55rem 1.2rem; cursor: pointer; font-family: 'Syne', sans-serif; font-size: .78rem;
+  color: var(--muted); border-left: 3px solid transparent; transition: all .2s;
+}
+.nav-item:hover { color: var(--text); background: var(--surface2); }
+.nav-item.active { color: var(--amber); border-left-color: var(--amber); background: rgba(245,166,35,.06); }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.nav-badge { margin-left: auto; font-size: .65rem; background: var(--border); padding: 1px 6px; border-radius: 10px; color: var(--muted); }
+.nav-badge.done { background: rgba(62,207,142,.15); color: var(--green); }
+
+/* ─── MAIN ─── */
+.main { flex: 1; overflow-y: auto; padding: 2rem; }
+
+/* ─── MODE TABS ─── */
+.mode-tabs { display: flex; gap: .5rem; margin-bottom: 2rem; }
+.mode-tab {
+  font-family: 'Syne', sans-serif; font-size: .75rem; font-weight: 600;
+  padding: .45rem 1rem; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+  transition: all .2s; letter-spacing: .04em;
+}
+.mode-tab.active { background: var(--amber); color: #000; border-color: var(--amber); }
+.mode-tab:hover:not(.active) { border-color: var(--amber); color: var(--amber); }
+
+/* ─── SECTION HEADER ─── */
+.section-header { margin-bottom: 1.5rem; }
+.section-label { font-family: 'Syne', sans-serif; font-size: .65rem; letter-spacing: .2em; color: var(--amber); text-transform: uppercase; margin-bottom: .4rem; }
+.section-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1.2; }
+.section-desc { color: var(--muted); font-size: .88rem; margin-top: .5rem; line-height: 1.6; font-style: italic; }
+
+/* ─── STUDY CARDS ─── */
+.study-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+.study-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.2rem; cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.study-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform .25s; }
+.study-card:hover { border-color: var(--amber-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.study-card:hover::before { transform: scaleX(1); }
+.card-tag { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--amber); margin-bottom: .6rem; letter-spacing: .08em; }
+.card-q { font-family: 'Syne', sans-serif; font-weight: 600; font-size: .9rem; line-height: 1.4; margin-bottom: .7rem; }
+.card-a { font-size: .83rem; color: var(--muted); line-height: 1.6; display: none; }
+.card-a.visible { display: block; color: var(--text); }
+.card-reveal { font-family: 'Syne', sans-serif; font-size: .7rem; color: var(--amber); margin-top: .8rem; letter-spacing: .06em; }
+
+/* ─── QUIZ MODE ─── */
+.quiz-wrap { max-width: 680px; margin: 0 auto; }
+.quiz-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 2rem; margin-bottom: 1.5rem; position: relative;
+}
+.quiz-meta { display: flex; justify-content: space-between; margin-bottom: 1.2rem; }
+.quiz-counter { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--muted); }
+.quiz-category { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--amber); }
+.quiz-q { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; line-height: 1.5; margin-bottom: 1.5rem; }
+.options { display: grid; gap: .6rem; }
+.option {
+  padding: .75rem 1rem; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--surface2);
+  font-size: .88rem; cursor: pointer; transition: all .2s;
+  font-family: 'Lora', serif;
+}
+.option:hover:not(.locked) { border-color: var(--amber); background: rgba(245,166,35,.07); }
+.option.correct { border-color: var(--green); background: rgba(62,207,142,.12); color: var(--green); }
+.option.wrong { border-color: var(--red); background: rgba(240,106,106,.1); color: var(--red); }
+.option.locked { cursor: default; }
+.explanation { margin-top: 1.2rem; padding: 1rem; background: var(--surface2); border-radius: 8px; border-left: 3px solid var(--blue); font-size: .85rem; line-height: 1.65; display: none; }
+.explanation.visible { display: block; }
+.explanation strong { color: var(--blue); font-family: 'Syne', sans-serif; font-size: .7rem; letter-spacing: .08em; display: block; margin-bottom: .3rem; }
+.quiz-nav { display: flex; gap: .8rem; justify-content: flex-end; margin-top: 1rem; }
+.btn {
+  font-family: 'Syne', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+  padding: .55rem 1.3rem; border-radius: 7px; cursor: pointer; border: none; transition: all .2s;
+}
+.btn-primary { background: var(--amber); color: #000; }
+.btn-primary:hover { background: #ffb93a; }
+.btn-outline { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ─── SCORE PANEL ─── */
+.score-panel { text-align: center; padding: 3rem 1rem; }
+.score-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--amber); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; background: rgba(245,166,35,.06); }
+.score-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--amber); }
+.score-denom { font-family: 'Syne', sans-serif; font-size: .75rem; color: var(--muted); }
+.score-msg { font-size: 1rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+/* ─── CHEATSHEET ─── */
+.cheat-section { margin-bottom: 2.5rem; }
+.cheat-heading { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--amber); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+.cheat-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.cheat-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.cheat-table th { font-family: 'Syne', sans-serif; font-size: .68rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; padding: .6rem .8rem; border-bottom: 1px solid var(--border); text-align: left; }
+.cheat-table td { padding: .65rem .8rem; border-bottom: 1px solid rgba(42,51,64,.5); vertical-align: top; line-height: 1.5; }
+.cheat-table tr:hover td { background: var(--surface2); }
+.tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: .65rem; padding: 2px 7px; border-radius: 4px; background: rgba(245,166,35,.12); color: var(--amber); margin: 1px; }
+.tag.blue { background: rgba(77,166,255,.12); color: var(--blue); }
+.tag.green { background: rgba(62,207,142,.12); color: var(--green); }
+.tag.red { background: rgba(240,106,106,.12); color: var(--red); }
+
+/* ─── TIMER ─── */
+.timer-row { display: flex; align-items: center; gap: .8rem; margin-bottom: 1.5rem; }
+.timer-display { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--amber); min-width: 70px; }
+.timer-btn { font-family: 'Syne', sans-serif; font-size: .7rem; font-weight: 600; padding: .3rem .8rem; border-radius: 5px; cursor: pointer; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); transition: all .2s; }
+.timer-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ─── ACCORDION ─── */
+.accordion { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: .8rem; }
+.accordion-head { padding: 1rem 1.2rem; cursor: pointer; font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; background: var(--surface); transition: background .2s; }
+.accordion-head:hover { background: var(--surface2); }
+.accordion-arrow { color: var(--amber); font-size: 1rem; transition: transform .2s; }
+.accordion-body { padding: 0 1.2rem; max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .2s; }
+.accordion-body.open { padding: 0 1.2rem 1.2rem; max-height: 1000px; }
+.accordion-body p, .accordion-body li { font-size: .85rem; line-height: 1.7; color: var(--muted); margin-bottom: .4rem; }
+.accordion-body li { margin-left: 1.2rem; }
+.accordion-body strong { color: var(--text); }
+.accordion-body code { font-family: 'JetBrains Mono', monospace; font-size: .8rem; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--blue); }
+
+/* ─── CHECKLIST ─── */
+.checklist { list-style: none; }
+.checklist li { display: flex; align-items: flex-start; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid rgba(42,51,64,.4); font-size: .85rem; line-height: 1.5; }
+.checklist input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; cursor: pointer; accent-color: var(--amber); flex-shrink: 0; }
+.checklist li.checked span { text-decoration: line-through; color: var(--muted); }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─── HIDDEN ─── */
+.hidden { display: none !important; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  .sidebar { width: 0; min-width: 0; overflow: hidden; }
+  .study-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">NAZ <span>ICT4D Prep</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress" style="width:0%"></div></div>
+  <div class="header-score">Score: <strong id="globalScore">0</strong>/<span id="globalTotal">0</span></div>
+</header>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Topics</div>
+    <div class="nav-item active" data-section="overview" onclick="switchSection('overview')">
+      <span class="nav-dot"></span> Overview
+    </div>
+    <div class="nav-item" data-section="ict4d" onclick="switchSection('ict4d')">
+      <span class="nav-dot"></span> ICT4D Frameworks <span class="nav-badge" id="badge-ict4d">12</span>
+    </div>
+    <div class="nav-item" data-section="meal" onclick="switchSection('meal')">
+      <span class="nav-dot"></span> MEAL Systems <span class="nav-badge" id="badge-meal">10</span>
+    </div>
+    <div class="nav-item" data-section="network" onclick="switchSection('network')">
+      <span class="nav-dot"></span> Network Admin <span class="nav-badge" id="badge-network">11</span>
+    </div>
+    <div class="nav-item" data-section="database" onclick="switchSection('database')">
+      <span class="nav-dot"></span> Database & SQL <span class="nav-badge" id="badge-database">10</span>
+    </div>
+    <div class="nav-item" data-section="hardware" onclick="switchSection('hardware')">
+      <span class="nav-dot"></span> Hardware & Support <span class="nav-badge" id="badge-hardware">9</span>
+    </div>
+    <div class="nav-item" data-section="security" onclick="switchSection('security')">
+      <span class="nav-dot"></span> Security & Infra <span class="nav-badge" id="badge-security">8</span>
+    </div>
+    <div class="nav-item" data-section="quiz" onclick="switchSection('quiz')">
+      <span class="nav-dot"></span> 🎯 Full Quiz
+    </div>
+    <div class="nav-item" data-section="checklist" onclick="switchSection('checklist')">
+      <span class="nav-dot"></span> ✓ Day-of Checklist
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="mainContent">
+    <!-- Sections injected by JS -->
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+
+const DATA = {
+  ict4d: {
+    title: "ICT4D Frameworks",
+    label: "ICT for Development",
+    desc: "Core theories, digital development principles, and deployment models used in humanitarian & NGO contexts.",
+    flashcards: [
+      { tag: "Definition", q: "What does ICT4D stand for and what is its core goal?", a: "Information and Communication Technology for Development. Its core goal is to leverage digital tools—mobile platforms, databases, internet connectivity, and hardware—to advance human development objectives: reducing poverty, improving health outcomes, enhancing education, and enabling community empowerment in low-resource environments." },
+      { tag: "Framework", q: "Name three dominant ICT4D implementation frameworks and their key distinction.", a: "1. Principles for Digital Development (9 principles by USAID/UN) — guidelines for responsible digital programming. 2. OECD DAC Digital Framework — focuses on policy coherence. 3. Digital Square's Global Goods Framework — classifies and evaluates reusable digital health tools. Key distinction: Principles are normative; Digital Square is evaluative; OECD focuses on governance." },
+      { tag: "Principle", q: "What are the 9 Principles for Digital Development?", a: "1. Design with the user. 2. Understand the existing ecosystem. 3. Design for scale. 4. Build for sustainability. 5. Be data-driven. 6. Use open standards, open data, open source. 7. Reuse and improve. 8. Address privacy & security. 9. Be collaborative." },
+      { tag: "Tool", q: "What is KoboToolbox and why is it preferred in NGO field data collection?", a: "KoboToolbox is an open-source mobile data collection platform built on ODK (Open Data Kit). It is preferred because it works offline in field conditions with poor connectivity, supports ODK/XLSForm standards, enables GPS tracking of survey points, and offers free server hosting for humanitarian organizations. Critical for nutrition surveys." },
+      { tag: "Tool", q: "Distinguish between ODK Collect, KoboToolbox, and CommCare.", a: "ODK Collect: Android app, pure open-source, requires own server. KoboToolbox: ODK-based with a hosted web interface, form builder, and dashboard — preferred by UNHCR/WFP. CommCare: more robust for case management and longitudinal tracking (health worker follow-up); paid tiers. All three support offline data capture." },
+      { tag: "Concept", q: "What is the 'last mile' problem in ICT4D and how is it typically addressed?", a: "The last mile refers to the challenge of extending ICT services to the most remote, underserved communities where infrastructure (power, internet, roads) is weakest. Solutions include: offline-first mobile apps, solar-powered devices, SMS-based data collection (e.g. RapidSMS, FrontlineSMS), and community health worker device kits." },
+      { tag: "NAZ Context", q: "How would ICT4D tools support a Nutrition Action Zimbabwe field program?", a: "Mobile data collection (KoboToolbox/ODK) for anthropometric measurements (MUAC, weight-for-height). GPS-tagged household surveys. Offline-capable tablet distribution to community volunteers. Data aggregation to a central database for MEAL dashboards. SMS alerts for severe acute malnutrition (SAM) case escalation." },
+      { tag: "Framework", q: "What is DHIS2 and why is it significant for nutrition programs in Zimbabwe?", a: "District Health Information Software 2 is an open-source health management information system (HMIS) used by the Zimbabwe Ministry of Health. It aggregates facility-level data, tracks health indicators, and generates reports. NAZ programs likely integrate with DHIS2 for national nutrition indicator reporting and government alignment." },
+      { tag: "Concept", q: "Explain 'human-centered design' in the context of ICT4D deployments.", a: "Human-centered design (HCD) means building technology systems around the actual workflows, literacy levels, languages, and constraints of the end users — often community health workers or program beneficiaries. In ICT4D: low-literacy UI (icon-based), local language interfaces, minimal data entry steps, and field-testing prototypes with real users before full deployment." },
+      { tag: "Standard", q: "What are open standards in ICT4D and why do they matter?", a: "Open standards are publicly documented technical specifications (e.g. HL7 FHIR for health data, ODK XForms for surveys) that enable interoperability between systems from different vendors or organizations. They prevent vendor lock-in, allow data portability, and enable cost-effective integration between program tools and government HMIS." },
+      { tag: "Scale", q: "What factors determine whether an ICT4D solution can scale?", a: "Technical: modular architecture, API-first design, open standards. Organizational: local capacity for maintenance, low dependency on external vendors. Financial: sustainable cost model (e.g. open-source tools). Social: community buy-in and behavior change. Policy: government alignment and regulatory compliance." },
+      { tag: "Zimbabwe", q: "Name key ICT infrastructure challenges specific to Zimbabwe that affect NGO digital programs.", a: "Intermittent power supply (ZESA load-shedding) requiring UPS/solar backup. Limited broadband in rural areas — reliance on mobile data (Econet/NetOne/Telecel). High device theft risk requiring MDM solutions. Low digital literacy among community-level users. Currency volatility affecting procurement of ICT equipment." },
+    ],
+    quiz: []
+  },
+
+  meal: {
+    title: "MEAL Systems & IT Integration",
+    label: "Monitoring · Evaluation · Accountability · Learning",
+    desc: "How IT infrastructure and secure database architectures underpin robust MEAL reporting for nutrition programs.",
+    flashcards: [
+      { tag: "Definition", q: "Define MEAL and explain each component.", a: "Monitoring: continuous tracking of program inputs, activities, outputs, and outcomes against targets. Evaluation: periodic, rigorous assessment of program effectiveness, relevance, efficiency, impact, and sustainability. Accountability: mechanisms for beneficiaries and stakeholders to provide feedback and access information about program performance. Learning: systematic capture and application of lessons to improve program quality and inform strategy." },
+      { tag: "IT Role", q: "How does IT infrastructure directly support MEAL systems?", a: "1. Data collection infrastructure (tablets, mobile apps, ODK servers). 2. Database design (structured storage of indicators, beneficiary data). 3. Data pipelines (ETL processes from field tools to central dashboards). 4. Reporting tools (Power BI, DHIS2, Tableau). 5. Network connectivity for real-time data sync. 6. Security controls for sensitive beneficiary data. 7. Backup systems ensuring data integrity." },
+      { tag:"Theory of Change", q: "What is a Theory of Change (ToC) and how does it relate to MEAL indicator selection?", a: "A Theory of Change is a causal logic model showing how program inputs and activities lead to outputs, outcomes, and long-term impact. MEAL indicators are selected at each link: output indicators (e.g. # children screened), outcome indicators (e.g. % SAM cases resolved), impact indicators (e.g. change in stunting rates). The IT system must capture data mapped to each ToC level." },
+      { tag: "Tool", q: "What database/software tools are commonly used for MEAL data management in nutrition NGOs?", a: "Data collection: KoboToolbox, ODK, CommCare. Database: MySQL, PostgreSQL, MS Access (small offices). Analysis: Excel/SPSS/R/Stata. Visualization: Power BI, DHIS2 dashboards, Google Data Studio. Case management: Salesforce NPO, Activity Info. Integration: REST APIs connecting field tools to central databases." },
+      { tag: "Security", q: "How do you ensure data privacy and protection for beneficiary data in a MEAL system?", a: "1. Anonymization/pseudonymization of beneficiary identifiers. 2. Role-based access control (RBAC) — field staff see only their areas. 3. Encryption at rest (AES-256) and in transit (TLS/SSL). 4. Consent forms for data collection (aligned with Zimbabwe Data Protection Act). 5. Secure data deletion policies. 6. Audit logs tracking who accessed what data and when." },
+      { tag: "Indicator", q: "Distinguish between output, outcome, and impact indicators with nutrition examples.", a: "Output: # of children under 5 screened for malnutrition (immediate result of activity). Outcome: % of SAM cases successfully treated (medium-term change in beneficiaries). Impact: Reduction in district-level stunting rate over 5 years (long-term population change). IT systems must store historical data to calculate trends for outcome and impact." },
+      { tag: "Accountability", q: "What is a Complaint and Feedback Mechanism (CFM) and how is it implemented technically?", a: "CFM is a structured system allowing beneficiaries to report concerns, provide feedback, or make complaints about program delivery. Technical implementation: SMS hotline (Twilio/Africa's Talking), toll-free call center, suggestion boxes with digital logging, WhatsApp feedback channel. Data feeds into a case management database (logged, tracked, resolved, reported)." },
+      { tag: "Reporting", q: "What is the difference between routine monitoring data and evaluation data?", a: "Routine monitoring data: collected continuously during program implementation (monthly/quarterly), tracks progress against targets, managed by program staff, stored in operational databases. Evaluation data: collected at specific points (baseline, midline, endline), uses rigorous research methods (sampling, control groups), may involve external evaluators, uses statistical analysis tools (SPSS, R, Stata)." },
+      { tag: "NAZ", q: "For a NAZ nutrition program, describe the data flow from field collection to donor report.", a: "Community health worker → KoboToolbox (tablet, offline) → sync to KoboToolbox server (via WiFi/mobile data) → automated export to PostgreSQL database → Power BI pulls from database → M&E Officer reviews dashboards → quarterly narrative report generated → submitted to donor (USAID/UNICEF/WFP). IT role: maintain all steps of this pipeline." },
+      { tag: "MEAL Plan", q: "What are the key components of a MEAL Plan document?", a: "1. Program description and Theory of Change. 2. Indicator table (indicator, definition, disaggregation, baseline, target, data source, frequency, responsible party). 3. Data collection tools and schedule. 4. Data quality assurance procedures. 5. Reporting schedule and formats. 6. Evaluation plan. 7. Accountability mechanisms. 8. Learning agenda and reflection schedule." },
+    ],
+    quiz: []
+  },
+
+  network: {
+    title: "Network Administration",
+    label: "Infrastructure · Connectivity · Protocols",
+    desc: "Core networking skills expected: LAN/WAN configuration, TCP/IP, VPN, troubleshooting methodologies.",
+    flashcards: [
+      { tag: "OSI Model", q: "Name all 7 OSI layers and give a practical example at each layer.", a: "1. Physical: ethernet cable, fiber, WiFi signal. 2. Data Link: MAC addresses, switches (Ethernet frames). 3. Network: IP addressing, routers (IP packets). 4. Transport: TCP/UDP, port numbers (segments). 5. Session: NetBIOS, establishing/maintaining sessions. 6. Presentation: SSL/TLS encryption, JPEG compression. 7. Application: HTTP, FTP, DNS, SMTP (user-facing protocols)." },
+      { tag: "Subnetting", q: "What is subnetting and why is it important for NGO office networks?", a: "Subnetting divides a large IP address space into smaller, manageable logical networks. For NGOs: separates staff LAN from guest WiFi from server DMZ. Example: 192.168.1.0/24 for staff, 192.168.2.0/24 for guests. /24 = 254 usable hosts, /25 = 126, /26 = 62. Improves security, reduces broadcast traffic, enables VLAN segmentation." },
+      { tag: "Protocol", q: "Explain DHCP and DNS — how do they interact?", a: "DHCP (Dynamic Host Configuration Protocol): automatically assigns IP addresses, subnet masks, default gateway, and DNS server addresses to devices joining the network. DNS (Domain Name System): resolves human-readable hostnames (e.g. kobo.naz.org.zw) to IP addresses. Interaction: DHCP tells devices which DNS server to query. Without DNS, users must use raw IP addresses for all services." },
+      { tag: "VPN", q: "What is a VPN and when would an NGO use one?", a: "A Virtual Private Network creates an encrypted tunnel over a public network (internet), allowing remote users to access internal resources securely. NGO use cases: field staff accessing HQ file servers from remote districts, securing data transmission from field offices with untrustworthy internet connections, connecting branch offices (site-to-site VPN). Common protocols: OpenVPN, WireGuard, IPSec." },
+      { tag: "Troubleshooting", q: "Walk through troubleshooting a user who cannot connect to the internet.", a: "1. Check physical: cable connected? WiFi on? 2. ipconfig/ifconfig — does device have an IP? If 169.x.x.x = DHCP failure. 3. ping 127.0.0.1 — tests TCP/IP stack. 4. ping default gateway — tests local network. 5. ping 8.8.8.8 — tests internet connectivity (Layer 3). 6. ping google.com — tests DNS resolution. 7. Check firewall, browser settings, proxy. Document findings." },
+      { tag: "Switch/Router", q: "Distinguish between a hub, switch, and router.", a: "Hub: Layer 1 — broadcasts all traffic to all ports (obsolete, creates collisions). Switch: Layer 2 — forwards frames only to the correct port using MAC address table (efficient, standard). Router: Layer 3 — routes packets between different networks (LAN to internet, subnet to subnet) using IP addresses and routing tables. NGO offices use switches internally, router at perimeter." },
+      { tag: "WiFi", q: "What are the key differences between WiFi bands (2.4GHz vs 5GHz) for office deployment?", a: "2.4GHz: longer range, better wall penetration, more interference (microwaves, neighbors), slower speeds (max ~600 Mbps), more devices connect. 5GHz: shorter range, less interference, faster speeds (up to 9.6 Gbps on WiFi 6), better for high-bandwidth tasks. NGO recommendation: dual-band APs with 2.4GHz for mobile data collection tablets across the building, 5GHz for staff laptops in office." },
+      { tag: "Firewall", q: "What is a firewall and what are its three main types?", a: "A firewall controls incoming and outgoing network traffic based on security rules. Types: 1. Packet filtering (stateless): checks IP/port headers. 2. Stateful inspection: tracks connection state. 3. Application/Next-Gen firewall (NGFW): deep packet inspection, application awareness (blocks specific apps like BitTorrent). NGOs typically use pfSense (open-source) or commercial NGFW at the network perimeter." },
+      { tag: "TCP vs UDP", q: "When would you use TCP vs UDP and give examples in NGO systems.", a: "TCP: connection-oriented, reliable delivery, ordered packets, handshake. Use for: web apps, database queries, file transfers, email, VPN data. UDP: connectionless, no guaranteed delivery, faster. Use for: video streaming, VoIP calls, DNS queries, real-time telemetry from IoT devices. NAZ context: KoboToolbox data sync = TCP; voice calls over internet = UDP." },
+      { tag: "Remote Access", q: "How would you set up secure remote access for an NGO with 5 field offices?", a: "1. Deploy site-to-site VPN (OpenVPN or WireGuard) between HQ and each field office router. 2. Assign each office a unique subnet. 3. Configure firewall rules allowing only necessary traffic between offices. 4. Deploy remote monitoring tool (e.g. Zabbix, LibreNMS) to monitor all sites from HQ. 5. Enable MFA for VPN login. 6. Document network topology and IP scheme." },
+      { tag: "Commands", q: "List key network diagnostic commands and their purpose.", a: "ping [host]: test reachability. traceroute/tracert: trace packet path. nslookup/dig: DNS lookup. netstat -an: view active connections and listening ports. ipconfig /all (Win) / ifconfig (Linux): view network interface config. arp -a: view ARP table (MAC-to-IP). nmap: network scanning. tcpdump/Wireshark: packet capture and analysis." },
+    ],
+    quiz: []
+  },
+
+  database: {
+    title: "Database Programming & Management",
+    label: "SQL · Schema Design · Data Integrity",
+    desc: "Relational database concepts, SQL queries, schema design for MEAL systems, and data quality principles.",
+    flashcards: [
+      { tag: "Fundamentals", q: "What are the ACID properties of a database and why do they matter for MEAL data?", a: "Atomicity: a transaction completes fully or not at all (no partial beneficiary records). Consistency: data always meets defined rules (no negative MUAC values). Isolation: concurrent transactions don't interfere. Durability: committed data survives system failures. For MEAL: ensures beneficiary records are never corrupted, partial, or lost during power outages — critical in Zimbabwe's load-shedding environment." },
+      { tag: "SQL", q: "Write a query to count beneficiaries screened per district in a nutrition program.", a: "SELECT district_name, COUNT(beneficiary_id) AS total_screened, SUM(CASE WHEN muac_status='SAM' THEN 1 ELSE 0 END) AS sam_cases FROM screenings JOIN districts ON screenings.district_id = districts.id WHERE screening_date BETWEEN '2024-01-01' AND '2024-12-31' GROUP BY district_name ORDER BY total_screened DESC;" },
+      { tag: "Schema", q: "Design a database schema for tracking MAM/SAM cases in a nutrition program.", a: "Tables: beneficiaries (id, name, dob, gender, district_id, village_id, caregiver_name, enroll_date), screenings (id, beneficiary_id, date, weight, height, muac, oedema, classification[SAM/MAM/Normal], screener_id), treatment_visits (id, beneficiary_id, visit_date, ration_issued, weight, muac, status[Active/Discharged/Died/LTFU/Non-Respond]), staff (id, name, role, district_id)." },
+      { tag: "SQL", q: "What is the difference between INNER JOIN, LEFT JOIN, and FULL OUTER JOIN?", a: "INNER JOIN: returns only rows where there is a match in BOTH tables. LEFT JOIN: returns ALL rows from left table + matching rows from right (NULL where no match — useful for 'beneficiaries with no visits'). FULL OUTER JOIN: all rows from both tables, NULLs where no match. Example: LEFT JOIN to find beneficiaries enrolled but never screened." },
+      { tag: "Normalization", q: "What is database normalization? Explain 1NF, 2NF, 3NF.", a: "1NF: no repeating groups, atomic values (don't store 'John, Jane' in one cell). 2NF: in 1NF + no partial dependencies on composite key. 3NF: in 2NF + no transitive dependencies (district_name depends on district_id, not on beneficiary_id). Why it matters: reduces data redundancy and inconsistency in MEAL databases — updating a district name should happen in one place." },
+      { tag: "Indexes", q: "What is a database index and when should you use one?", a: "An index is a data structure that speeds up queries on a column at the cost of additional storage and slower writes. Use on: columns frequently used in WHERE clauses (beneficiary_id, district_id, screening_date), JOIN columns, foreign keys. Don't over-index: slows INSERT/UPDATE operations. In a MEAL database with millions of screening records, index on date and district speeds dashboard queries significantly." },
+      { tag: "SQL", q: "Write a query to identify beneficiaries who were enrolled but had no follow-up visits in 30 days.", a: "SELECT b.id, b.name, b.enroll_date FROM beneficiaries b LEFT JOIN treatment_visits tv ON b.id = tv.beneficiary_id AND tv.visit_date > b.enroll_date WHERE b.status = 'Active' AND (tv.id IS NULL OR tv.visit_date < CURRENT_DATE - INTERVAL '30 days') ORDER BY b.enroll_date;" },
+      { tag: "Backup", q: "Describe a robust database backup strategy for an NGO in Zimbabwe.", a: "3-2-1 Rule: 3 copies, 2 different media, 1 offsite. Implementation: nightly automated pg_dump (PostgreSQL) to local NAS, weekly sync to encrypted cloud (AWS S3 or Backblaze), monthly backup to encrypted external HDD stored offsite. Test restores quarterly. Given ZESA load-shedding: UPS on database server, automatic shutdown scripts, and battery-backed NAS. Document RTO (Recovery Time Objective) and RPO (Recovery Point Objective)." },
+      { tag: "Tools", q: "What database tools should an ICT4D staff member know for NGO deployments?", a: "PostgreSQL: robust open-source RDBMS, widely used with DHIS2 and KoboToolbox. MySQL/MariaDB: common in LAMP stack deployments. MS SQL Server: Microsoft environments. SQLite: embedded in mobile apps (ODK Collect stores submissions locally). Tools: pgAdmin (PostgreSQL GUI), DBeaver (universal DB client), MySQL Workbench, Python/R for data extraction scripts." },
+      { tag: "Data Quality", q: "What is a data quality audit and how do you run one on a MEAL database?", a: "A systematic review of data completeness, accuracy, consistency, timeliness, and validity. Steps: 1. Run completeness queries (% of missing values per field). 2. Check for outliers (WHERE weight > 200 OR weight < 1). 3. Validate referential integrity (orphaned records). 4. Cross-check digital vs paper records (sample verification). 5. Review for duplicates (same name/DOB/village). Document findings and remediation plan." },
+    ],
+    quiz: []
+  },
+
+  hardware: {
+    title: "Hardware Integration & Troubleshooting",
+    label: "Devices · Peripherals · Field Support",
+    desc: "Device management, field kit configuration, troubleshooting methodology, and end-user support best practices.",
+    flashcards: [
+      { tag: "Methodology", q: "Describe a systematic hardware troubleshooting methodology.", a: "1. Gather information: what is the symptom? When did it start? What changed? 2. Isolate the problem: test with known-good components. 3. Identify likely causes (hardware vs software vs network vs user). 4. Test most probable cause first. 5. Implement fix. 6. Verify solution. 7. Document the incident and resolution. Always backup data before hardware interventions." },
+      { tag: "POST", q: "What is POST and what do common POST beep codes indicate?", a: "POST (Power-On Self-Test) is a diagnostic sequence run by BIOS/UEFI at startup. Common beep codes: 1 short = OK (AMI BIOS). 1 long + 2 short = video card error. 1 long + 3 short = video memory error. Continuous beeping = RAM failure. 3 long beeps = keyboard controller error. Modern systems often use LED codes instead. Always consult motherboard manual for specific codes." },
+      { tag: "MDM", q: "What is Mobile Device Management (MDM) and why is it critical for NGO tablet deployments?", a: "MDM is software that remotely manages, monitors, and secures mobile devices. For NGOs: enforces encryption policies, enables remote wipe if device is lost/stolen, controls which apps can be installed (limits to KoboToolbox + essential apps), manages WiFi profiles centrally, tracks device location, and provides remote troubleshooting. Common MDM: Microsoft Intune, Jamf (Apple), ManageEngine. Critical for NGOs that distribute devices to field staff." },
+      { tag: "Solar Power", q: "How would you design a power solution for a field office with daily 8-hour load shedding?", a: "Audit: calculate total watt-hours needed (laptops ~60W, router ~15W, NAS ~30W, lights ~50W = ~155W/hr × 8hrs = 1240 Wh/day). Solution: 200Ah 12V battery bank (2400 Wh usable at 50% DOD), 400W solar array (4 × 100W panels), 40A MPPT charge controller, 1000W pure sine wave inverter. Add UPS for server/NAS for surge protection. Cost-effective for Zimbabwe." },
+      { tag: "Printer", q: "Troubleshoot a network printer that staff can see but cannot print to.", a: "1. Verify printer has correct IP (print configuration page). 2. Ping printer IP from workstation — reachable? 3. Check if print spooler service is running on workstation (services.msc). 4. Clear stuck print queue (net stop spooler, del spool files, net start spooler). 5. Re-add printer using exact IP. 6. Check firewall blocking port 9100 (RAW) or 631 (IPP). 7. Reinstall driver." },
+      { tag: "Tablets", q: "What are the key steps to deploy 20 Android tablets for field data collection?", a: "1. Purchase identical models for uniform management. 2. Enroll in MDM (Android Enterprise). 3. Configure WiFi profiles. 4. Install KoboToolbox/ODK Collect centrally. 5. Create user accounts with role-based access. 6. Load forms. 7. Enable encryption and screen lock (PIN min 6 digits). 8. Label devices with asset tags. 9. Train field staff. 10. Establish charging, carrying case, and check-in/out protocol. 11. Document IMEI numbers for theft reporting." },
+      { tag: "RAM/Storage", q: "A laptop is running very slowly. How do you diagnose and resolve it?", a: "Check Task Manager (CPU%, RAM%, Disk%): high disk = likely HDD failing or too full; high RAM = insufficient memory; high CPU = malware or runaway process. Disk: run SMART test (CrystalDiskInfo), check free space (need 15%+). RAM: run Windows Memory Diagnostic. Malware: run Malwarebytes. Startup programs: msconfig. Consider: SSD upgrade (replaces HDD, 10× speed gain), RAM upgrade (8GB minimum). Defrag only HDDs, not SSDs." },
+      { tag: "Networking HW", q: "Describe how to set up and configure a new office router/switch.", a: "1. Connect laptop directly via ethernet to router admin port. 2. Access admin panel (192.168.1.1 default). 3. Change default admin credentials immediately. 4. Configure WAN settings (ISP details: PPPoE/static IP). 5. Set LAN IP scheme (192.168.x.1 gateway). 6. Configure DHCP pool (reserve IPs for printers/servers). 7. Set up WiFi SSIDs (staff + guest, separate VLANs). 8. Enable firewall rules. 9. Disable unused services (UPnP, WPS). 10. Backup config." },
+      { tag: "Preventive", q: "What is a preventive maintenance schedule for an NGO computer lab?", a: "Monthly: clean keyboards/screens, update OS and antivirus, check disk space, review backup logs. Quarterly: physical cleaning of CPU fans and vents (compressed air), check cable management, test UPS battery, verify all software licenses. Annually: SMART tests on all HDDs, replace thermal paste on high-use machines, hardware inventory audit, review and update asset register. Document everything in a maintenance log." },
+    ],
+    quiz: []
+  },
+
+  security: {
+    title: "Security & Infrastructure",
+    label: "Cybersecurity · Data Protection · System Admin",
+    desc: "Information security principles, server administration, and organizational data protection in NGO contexts.",
+    flashcards: [
+      { tag: "CIA Triad", q: "Explain the CIA Triad and apply it to a nutrition program database.", a: "Confidentiality: only authorized staff access beneficiary data (RBAC, encryption). Integrity: data is accurate and unmodified (checksums, audit logs, no unauthorized edits). Availability: system is accessible when needed (uptime, backups, UPS). NAZ application: a field officer viewing SAM records must have confidentiality (no PII leaks), integrity (unaltered screening data), and availability (accessible during program visits)." },
+      { tag: "Authentication", q: "What is multi-factor authentication (MFA) and when is it mandatory?", a: "MFA requires two or more verification factors: something you know (password), something you have (phone/hardware token), something you are (biometric). Mandatory for: VPN access, email admin accounts, cloud server access, any system containing sensitive beneficiary data. Implementation: Google Authenticator (TOTP), hardware keys (YubiKey), or SMS codes (weakest option). The Zimbabwe Data Protection Act recommends MFA for systems processing personal data." },
+      { tag: "Encryption", q: "Explain encryption at rest vs encryption in transit.", a: "At rest: data stored on disk/database is encrypted (AES-256 for databases, BitLocker for Windows drives, FileVault for Mac, dm-crypt for Linux). Prevents data theft if hardware is physically stolen. In transit: data moving between systems is encrypted (TLS 1.2+/SSL for web, SSH for remote access, SFTP for file transfers). Prevents interception on the network. Both are required for beneficiary data in NGO MEAL systems." },
+      { tag: "Phishing", q: "How would you train NGO staff to recognize and respond to phishing?", a: "Training: show real examples — spoofed sender addresses, urgent language ('Your account will be deleted'), suspicious links (hover to preview URL), unexpected attachments. Response protocol: do not click, report to IT via dedicated email/channel, do not enter credentials. Technical controls: email filtering (spam scores), SPF/DKIM records, MFA. Run simulated phishing tests quarterly and train those who click. Document results." },
+      { tag: "Backup", q: "Describe the 3-2-1 backup rule and implement it for an NGO.", a: "3 copies of data, on 2 different media types, with 1 offsite. Implementation: Primary = production server (copy 1). Backup 1 = NAS/external drive in server room (copy 2, media 2). Backup 2 = encrypted cloud storage or external drive at a different location (copy 3, offsite). Test restoration monthly. Document RTO (how fast can you restore?) and RPO (how much data can you afford to lose?)." },
+      { tag: "Linux", q: "What Linux administration skills are expected in an ICT4D role?", a: "File system navigation (ls, cd, cp, mv, rm, chmod, chown). Package management (apt/yum). Service management (systemctl start/stop/enable). User management (useradd, passwd, sudo). Log review (/var/log/syslog, auth.log). Cron jobs for automated backups. SSH configuration. Firewall (ufw/iptables). Basic scripting (bash). Disk management (df -h, du, fdisk, mount). These are essential for managing KoboToolbox or DHIS2 servers." },
+      { tag: "Incident Response", q: "Walk through an incident response plan for a suspected malware infection.", a: "1. Identify: symptoms (slow performance, strange network traffic, unexpected popups). 2. Contain: disconnect device from network immediately. 3. Eradicate: boot from clean USB, run offline antivirus scan (Kaspersky Rescue Disk), format if necessary. 4. Recover: restore from clean backup, verify integrity. 5. Post-incident: identify entry point (email attachment? USB drive?), patch vulnerability, update policies, train staff. Document timeline." },
+      { tag: "Data Policy", q: "What data protection policies should an NGO have for beneficiary data?", a: "1. Data Classification Policy (Public/Internal/Confidential/Restricted). 2. Acceptable Use Policy. 3. Data Retention and Disposal Policy (how long to keep, how to destroy). 4. Password Policy (minimum 12 chars, complexity, no sharing). 5. BYOD Policy. 6. Incident Response Policy. 7. Privacy Notice for beneficiaries (Zimbabwe Data Protection Act compliance). 8. Data Sharing Agreement templates for partner organizations." },
+    ],
+    quiz: []
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ QUESTIONS (all topics mixed)
+// ═══════════════════════════════════════════════════════════
+const ALL_QUIZ = [
+  { cat:"ICT4D", q:"Which tool is most widely used for offline mobile data collection in humanitarian field programs?", opts:["Microsoft Access","KoboToolbox","LibreOffice Calc","WhatsApp Forms"], correct:1, exp:"KoboToolbox is the humanitarian sector standard for offline mobile data collection, built on the ODK (Open Data Kit) protocol. It works without internet connectivity, which is critical for field data collection in rural Zimbabwe." },
+  { cat:"MEAL", q:"In MEAL terminology, which component specifically gives beneficiaries the right to provide feedback on programs?", opts:["Monitoring","Evaluation","Accountability","Learning"], correct:2, exp:"Accountability is the MEAL component that establishes mechanisms (complaint hotlines, feedback forms, community meetings) through which beneficiaries can voice concerns and receive information about program decisions." },
+  { cat:"Network", q:"A workstation receives IP address 169.254.x.x. What does this indicate?", opts:["Successful DHCP assignment","APIPA — the DHCP server is unreachable","The IP was manually assigned","The DNS server is down"], correct:1, exp:"169.254.x.x is an APIPA (Automatic Private IP Addressing) address, self-assigned by Windows when it cannot reach a DHCP server. This indicates a DHCP connectivity problem — check cable, switch port, or DHCP service." },
+  { cat:"Database", q:"Which SQL statement would you use to remove all records from a table while keeping its structure?", opts:["DROP TABLE","DELETE FROM table","TRUNCATE TABLE","ALTER TABLE"], correct:2, exp:"TRUNCATE removes all rows from a table instantly without logging individual row deletions, keeping the table structure. DELETE FROM is slower (logs each row), and DROP TABLE removes the entire table structure." },
+  { cat:"ICT4D", q:"DHIS2 is primarily used for:", opts:["Payroll management","Health management information system (HMIS) reporting","Social media monitoring","VPN configuration"], correct:1, exp:"DHIS2 (District Health Information Software 2) is an open-source HMIS platform used by 73+ countries' health ministries, including Zimbabwe. NGO nutrition programs often report into DHIS2 for national health indicator tracking." },
+  { cat:"Security", q:"What does the 'A' in the CIA Triad stand for?", opts:["Authentication","Authorization","Availability","Accountability"], correct:2, exp:"The CIA Triad is Confidentiality (only authorized access), Integrity (data accuracy and unaltered state), and Availability (systems accessible when needed). All three must be balanced in ICT4D security design." },
+  { cat:"MEAL", q:"What is the correct order of a Theory of Change logic model?", opts:["Inputs → Activities → Outputs → Outcomes → Impact","Impact → Outcomes → Outputs → Activities → Inputs","Activities → Inputs → Outcomes → Outputs → Impact","Outputs → Activities → Inputs → Outcomes → Impact"], correct:0, exp:"Inputs (resources) → Activities (what you do) → Outputs (direct deliverables) → Outcomes (medium-term changes) → Impact (long-term systemic change). This logic chain defines which indicators to track at each MEAL level." },
+  { cat:"Network", q:"Which protocol resolves human-readable domain names to IP addresses?", opts:["DHCP","DNS","HTTP","ARP"], correct:1, exp:"DNS (Domain Name System) translates hostnames like 'kobo.naz.org.zw' to IP addresses. DHCP assigns IPs. ARP maps IP addresses to MAC addresses at Layer 2. HTTP is an application layer protocol for web traffic." },
+  { cat:"Database", q:"Which database normalization form eliminates transitive dependencies?", opts:["1NF","2NF","3NF","BCNF"], correct:2, exp:"Third Normal Form (3NF) requires that all non-key attributes depend only on the primary key — eliminating transitive dependencies. Example: district_name should be in a Districts table, not repeated in each beneficiary record." },
+  { cat:"Hardware", q:"What does POST stand for and when does it run?", opts:["Power On System Test, during OS boot","Power On Self-Test, before OS loads","Program Operation System Test, at login","Peripheral Output Status Test, during shutdown"], correct:1, exp:"POST (Power-On Self-Test) is a diagnostic routine executed by BIOS/UEFI firmware immediately when the computer powers on, before the OS loads. It checks CPU, RAM, GPU, and storage devices for basic functionality." },
+  { cat:"ICT4D", q:"The 'last mile' problem in ICT4D refers to:", opts:["The final step of software deployment","Extending connectivity to the most remote underserved communities","The last kilometer of fiber optic cable","Closing a project's data collection phase"], correct:1, exp:"The 'last mile' challenge describes the difficulty of extending ICT services (internet, mobile networks, digital tools) to the most geographically isolated communities with weakest infrastructure — a central challenge in Zimbabwe's rural districts." },
+  { cat:"Security", q:"Which encryption standard is recommended for protecting data at rest?", opts:["MD5","SHA-1","AES-256","DES"], correct:2, exp:"AES-256 (Advanced Encryption Standard with 256-bit key) is the current gold standard for data-at-rest encryption. MD5 and SHA-1 are hash functions (not encryption), and DES is deprecated as cryptographically weak." },
+  { cat:"Network", q:"At which OSI layer do routers operate?", opts:["Layer 1 (Physical)","Layer 2 (Data Link)","Layer 3 (Network)","Layer 4 (Transport)"], correct:2, exp:"Routers operate at Layer 3 (Network) and make forwarding decisions based on IP addresses and routing tables. Switches operate at Layer 2 using MAC addresses. Hubs operate at Layer 1, broadcasting to all ports." },
+  { cat:"MEAL", q:"A beneficiary complaint and feedback mechanism (CFM) is primarily part of which MEAL component?", opts:["Monitoring","Evaluation","Accountability","Learning"], correct:2, exp:"CFM mechanisms (hotlines, suggestion boxes, SMS feedback) are accountability tools that give beneficiaries a voice and ensure programs are responsive to community concerns — a core principle of humanitarian accountability standards (HAP, CHS)." },
+  { cat:"Database", q:"What SQL clause is used to filter aggregated results (i.e., filter after GROUP BY)?", opts:["WHERE","HAVING","FILTER","LIMIT"], correct:1, exp:"HAVING filters results after grouping, unlike WHERE which filters before aggregation. Example: GROUP BY district HAVING COUNT(beneficiary_id) > 100 — returns only districts with more than 100 beneficiaries." },
+  { cat:"Hardware", q:"What does MDM stand for and what is it used for?", opts:["Mobile Data Management — manages cellular data usage","Mobile Device Management — remotely manages and secures devices","Master Data Model — defines data schemas","Monitoring Dashboard Module — tracks KPIs"], correct:1, exp:"Mobile Device Management (MDM) allows IT administrators to remotely configure, monitor, update, and secure smartphones and tablets. Critical for NGOs distributing devices to field staff — enables remote wipe if devices are lost or stolen." },
+  { cat:"ICT4D", q:"Which of the 9 Principles for Digital Development addresses sustainability?", opts:["Design with the user","Use open standards","Build for sustainability","Be data-driven"], correct:2, exp:"'Build for sustainability' is Principle 4 of the Principles for Digital Development, emphasizing that digital tools must be financially, technically, and organizationally sustainable beyond initial project funding — avoiding abandoned systems." },
+  { cat:"Security", q:"What is the purpose of Role-Based Access Control (RBAC) in a MEAL database?", opts:["To encrypt database backups","To ensure users can only access data relevant to their role and geography","To speed up database queries","To automate backup scheduling"], correct:1, exp:"RBAC restricts data access based on user roles. A district health officer sees only their district's data; a program manager sees all districts but cannot edit source records; a data entry clerk can add but not delete records. Critical for beneficiary data confidentiality." },
+  { cat:"Network", q:"Which command on Windows displays all active network connections and listening ports?", opts:["ipconfig /all","netstat -an","arp -a","nslookup"], correct:1, exp:"'netstat -an' displays all active TCP/UDP connections and listening ports with numeric addresses. Essential for troubleshooting connectivity issues, identifying unauthorized connections, and verifying that server services are listening on expected ports." },
+  { cat:"MEAL", q:"Which software would you use to create an interactive dashboard from a PostgreSQL MEAL database?", opts:["Microsoft Word","Power BI or DHIS2","MS Paint","Notepad"], correct:1, exp:"Power BI (Microsoft) can connect directly to PostgreSQL databases and create interactive dashboards with filters, charts, and maps. DHIS2 has built-in visualization tools specifically designed for health program indicators. Both are widely used in NGO MEAL reporting." },
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let currentSection = 'overview';
+let quizState = { idx: 0, score: 0, answered: false, active: false, mode: 'mixed' };
+let timerInterval = null, timerSeconds = 0, timerRunning = false;
+let checkedItems = new Set();
+let revealedCards = new Set();
+let quizScores = {};
+let totalAnswered = 0, totalCorrect = 0;
+
+// ═══════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════════════════════════
+const main = document.getElementById('mainContent');
+
+function switchSection(s) {
+  currentSection = s;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-section="${s}"]`)?.classList.add('active');
+  render();
+}
+
+function render() {
+  switch(currentSection) {
+    case 'overview': renderOverview(); break;
+    case 'quiz': renderQuiz(); break;
+    case 'checklist': renderChecklist(); break;
+    default: renderTopic(currentSection);
+  }
+}
+
+// ─── OVERVIEW ───────────────────────────────────────────────
+function renderOverview() {
+  const topics = [
+    { id:'ict4d', icon:'🌐', label:'ICT4D Frameworks', n:12, color:'#f5a623' },
+    { id:'meal', icon:'📊', label:'MEAL Systems', n:10, color:'#3ecf8e' },
+    { id:'network', icon:'🔗', label:'Network Admin', n:11, color:'#4da6ff' },
+    { id:'database', icon:'🗄️', label:'Database & SQL', n:10, color:'#b78aff' },
+    { id:'hardware', icon:'🖥️', label:'Hardware & Support', n:9, color:'#ff8c61' },
+    { id:'security', icon:'🔒', label:'Security & Infra', n:8, color:'#f06a6a' },
+  ];
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">NAZ · ICT4D Assistant</div>
+      <div class="section-title">Interview Preparation Hub</div>
+      <div class="section-desc">Comprehensive preparation for the Nutrition Action Zimbabwe technical assessment covering ICT4D frameworks, MEAL systems, network administration, database management, hardware troubleshooting, and information security.</div>
+    </div>
+
+    <div class="timer-row">
+      <span style="font-family:'Syne',sans-serif;font-size:.75rem;color:var(--muted)">STUDY TIMER</span>
+      <span class="timer-display" id="timerDisplay">00:00</span>
+      <button class="timer-btn" onclick="toggleTimer()">${timerRunning?'Pause':'Start'}</button>
+      <button class="timer-btn" onclick="resetTimer()">Reset</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem">
+      ${topics.map(t => `
+        <div onclick="switchSection('${t.id}')" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='${t.color}';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform=''">
+          <div style="font-size:1.8rem;margin-bottom:.5rem">${t.icon}</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.25rem">${t.label}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:${t.color}">${t.n} flash cards + quiz questions</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${t.color};opacity:.5"></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+      <div onclick="switchSection('quiz')" style="background:linear-gradient(135deg,rgba(245,166,35,.15),rgba(245,166,35,.05));border:1px solid rgba(245,166,35,.3);border-radius:10px;padding:1.5rem;cursor:pointer;text-align:center;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="font-size:2rem;margin-bottom:.5rem">🎯</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--amber)">Full Mock Quiz</div>
+        <div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">${ALL_QUIZ.length} questions across all topics</div>
+      </div>
+      <div onclick="switchSection('checklist')" style="background:linear-gradient(135deg,rgba(62,207,142,.1),rgba(62,207,142,.03));border:1px solid rgba(62,207,142,.2);border-radius:10px;padding:1.5rem;cursor:pointer;text-align:center;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="font-size:2rem;margin-bottom:.5rem">✅</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--green)">Day-of Checklist</div>
+        <div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">What to bring, review, and prepare</div>
+      </div>
+    </div>
+
+    <div class="cheat-section">
+      <div class="cheat-heading">⚡ Quick Reference — Key Acronyms</div>
+      <table class="cheat-table">
+        <tr><th>Acronym</th><th>Stands For</th><th>Context</th></tr>
+        <tr><td><span class="tag">ICT4D</span></td><td>Information & Communication Technology for Development</td><td>Core field of the role</td></tr>
+        <tr><td><span class="tag">MEAL</span></td><td>Monitoring, Evaluation, Accountability, Learning</td><td>Program management framework</td></tr>
+        <tr><td><span class="tag">DHIS2</span></td><td>District Health Information Software 2</td><td>Zimbabwe national HMIS</td></tr>
+        <tr><td><span class="tag">ODK</span></td><td>Open Data Kit</td><td>Mobile data collection standard</td></tr>
+        <tr><td><span class="tag">RBAC</span></td><td>Role-Based Access Control</td><td>Database/system security</td></tr>
+        <tr><td><span class="tag">SAM/MAM</span></td><td>Severe/Moderate Acute Malnutrition</td><td>NAZ program indicators</td></tr>
+        <tr><td><span class="tag">MUAC</span></td><td>Mid-Upper Arm Circumference</td><td>Nutrition screening metric</td></tr>
+        <tr><td><span class="tag">ToC</span></td><td>Theory of Change</td><td>MEAL program design</td></tr>
+        <tr><td><span class="tag">ACID</span></td><td>Atomicity, Consistency, Isolation, Durability</td><td>Database reliability</td></tr>
+        <tr><td><span class="tag">CIA</span></td><td>Confidentiality, Integrity, Availability</td><td>Security framework</td></tr>
+        <tr><td><span class="tag">CFM</span></td><td>Complaint & Feedback Mechanism</td><td>Accountability tool</td></tr>
+        <tr><td><span class="tag">MDM</span></td><td>Mobile Device Management</td><td>Device fleet management</td></tr>
+      </table>
+    </div>
+  `;
+  updateTimerDisplay();
+}
+
+// ─── TOPIC (STUDY + QUIZ TOGGLE) ────────────────────────────
+function renderTopic(topicId) {
+  const topic = DATA[topicId];
+  const mode = document.getElementById(`mode_${topicId}`)?.dataset.mode || 'study';
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">${topic.label}</div>
+      <div class="section-title">${topic.title}</div>
+      <div class="section-desc">${topic.desc}</div>
+    </div>
+    <div class="mode-tabs">
+      <div class="mode-tab ${mode==='study'?'active':''}" onclick="setTopicMode('${topicId}','study')">📖 Flash Cards</div>
+      <div class="mode-tab ${mode==='cheat'?'active':''}" onclick="setTopicMode('${topicId}','cheat')">📋 Cheat Sheet</div>
+    </div>
+    <div id="topicBody_${topicId}"></div>
+    <input type="hidden" id="mode_${topicId}" data-mode="${mode}">
+  `;
+  renderTopicBody(topicId, mode);
+}
+
+function setTopicMode(topicId, mode) {
+  document.getElementById(`mode_${topicId}`).dataset.mode = mode;
+  document.querySelectorAll('.mode-tab').forEach((el,i) => {
+    el.classList.toggle('active', (i===0 && mode==='study') || (i===1 && mode==='cheat'));
+  });
+  renderTopicBody(topicId, mode);
+}
+
+function renderTopicBody(topicId, mode) {
+  const topic = DATA[topicId];
+  const body = document.getElementById(`topicBody_${topicId}`);
+  if (mode === 'study') {
+    body.innerHTML = `<div class="study-grid">${topic.flashcards.map((c,i) => `
+      <div class="study-card" onclick="toggleCard('${topicId}_${i}')">
+        <div class="card-tag">${c.tag}</div>
+        <div class="card-q">${c.q}</div>
+        <div class="card-a ${revealedCards.has(topicId+'_'+i)?'visible':''}" id="card_${topicId}_${i}">${c.a}</div>
+        <div class="card-reveal">${revealedCards.has(topicId+'_'+i)?'▲ Hide answer':'▼ Reveal answer'}</div>
+      </div>
+    `).join('')}</div>`;
+  } else {
+    // Cheat sheet accordion
+    body.innerHTML = `<div>${topic.flashcards.map((c,i) => `
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAccordion('acc_${topicId}_${i}')">
+          <span><span class="tag" style="margin-right:.5rem">${c.tag}</span>${c.q}</span>
+          <span class="accordion-arrow" id="arr_${topicId}_${i}">›</span>
+        </div>
+        <div class="accordion-body" id="acc_${topicId}_${i}">
+          <p>${c.a}</p>
+        </div>
+      </div>
+    `).join('')}</div>`;
+  }
+}
+
+function toggleCard(id) {
+  if (revealedCards.has(id)) revealedCards.delete(id);
+  else revealedCards.add(id);
+  const el = document.getElementById('card_'+id);
+  if (el) {
+    el.classList.toggle('visible', revealedCards.has(id));
+    el.previousElementSibling.previousElementSibling.nextElementSibling.textContent = revealedCards.has(id) ? '▲ Hide answer' : '▼ Reveal answer';
+  }
+}
+
+function toggleAccordion(id) {
+  const body = document.getElementById(id);
+  const topicId = id.split('_')[1];
+  const i = id.split('_')[2];
+  const arr = document.getElementById(`arr_${topicId}_${i}`);
+  const isOpen = body.classList.toggle('open');
+  if (arr) arr.style.transform = isOpen ? 'rotate(90deg)' : '';
+}
+
+// ─── QUIZ ────────────────────────────────────────────────────
+function renderQuiz() {
+  if (!quizState.active) {
+    renderQuizStart();
+    return;
+  }
+  if (quizState.idx >= ALL_QUIZ.length) {
+    renderQuizEnd();
+    return;
+  }
+  const q = ALL_QUIZ[quizState.idx];
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">Full Mock Assessment</div>
+      <div class="section-title">Technical Quiz</div>
+    </div>
+    <div class="quiz-wrap">
+      <div class="quiz-card">
+        <div class="quiz-meta">
+          <span class="quiz-counter">Q ${quizState.idx+1} / ${ALL_QUIZ.length}</span>
+          <span class="quiz-category">${q.cat}</span>
+        </div>
+        <div class="quiz-q">${q.q}</div>
+        <div class="options" id="optionsWrap">
+          ${q.opts.map((o,i) => `<div class="option" id="opt_${i}" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</div>`).join('')}
+        </div>
+        <div class="explanation" id="explanation">
+          <strong>💡 EXPLANATION</strong>${q.exp}
+        </div>
+      </div>
+      <div class="quiz-nav">
+        <div style="flex:1;display:flex;align-items:center;gap:.5rem">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--green)">✓ ${quizState.score} correct</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted)">/ ${quizState.idx} answered</div>
+        </div>
+        <button class="btn btn-outline" onclick="endQuiz()">End Quiz</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderQuizStart() {
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">Assessment Simulation</div>
+      <div class="section-title">Full Mock Quiz</div>
+      <div class="section-desc">Simulate the NAZ technical assessment. ${ALL_QUIZ.length} questions across all topic areas. Read each question carefully — explain your reasoning for each answer.</div>
+    </div>
+    <div class="quiz-wrap" style="text-align:center;padding-top:2rem">
+      <div style="font-size:3rem;margin-bottom:1rem">🎯</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem">${ALL_QUIZ.length} Questions · All Topics</div>
+      <div style="color:var(--muted);font-size:.88rem;margin-bottom:2rem;line-height:1.7">ICT4D · MEAL · Network Admin · Database · Hardware · Security<br>Each question includes a detailed explanation after your answer.</div>
+      ${totalAnswered > 0 ? `<div style="margin-bottom:1.5rem;padding:1rem;background:var(--surface);border-radius:8px;border:1px solid var(--border)"><span style="font-family:'Syne',sans-serif;font-size:.8rem;color:var(--muted)">PREVIOUS SCORE: </span><strong style="color:var(--amber)">${totalCorrect}/${totalAnswered}</strong></div>` : ''}
+      <button class="btn btn-primary" style="font-size:.9rem;padding:.7rem 2rem" onclick="startQuiz()">Begin Assessment →</button>
+    </div>
+  `;
+}
+
+function renderQuizEnd() {
+  const pct = Math.round((quizState.score/ALL_QUIZ.length)*100);
+  let msg = pct >= 80 ? '🏆 Excellent! You are well-prepared.' : pct >= 60 ? '📈 Good progress. Review weaker areas.' : '📚 More study needed — revisit each topic section.';
+  let color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+  totalAnswered = ALL_QUIZ.length;
+  totalCorrect = quizState.score;
+  document.getElementById('globalScore').textContent = totalCorrect;
+  document.getElementById('globalTotal').textContent = totalAnswered;
+  document.getElementById('globalProgress').style.width = pct + '%';
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">Assessment Complete</div>
+      <div class="section-title">Your Results</div>
+    </div>
+    <div class="quiz-wrap">
+      <div class="score-panel">
+        <div class="score-circle" style="border-color:${color}">
+          <div class="score-num" style="color:${color}">${pct}%</div>
+          <div class="score-denom">${quizState.score}/${ALL_QUIZ.length}</div>
+        </div>
+        <div class="score-msg">${msg}</div>
+        <div style="display:flex;gap:.8rem;justify-content:center;margin-bottom:2rem">
+          <button class="btn btn-primary" onclick="startQuiz()">Retake Quiz</button>
+          <button class="btn btn-outline" onclick="switchSection('overview')">Back to Overview</button>
+        </div>
+      </div>
+      <div class="cheat-section">
+        <div class="cheat-heading">Score by Category</div>
+        ${renderCategoryScores()}
+      </div>
+    </div>
+  `;
+}
+
+function renderCategoryScores() {
+  const cats = {};
+  ALL_QUIZ.forEach((q,i) => {
+    if (!cats[q.cat]) cats[q.cat] = { total:0, correct:0 };
+    cats[q.cat].total++;
+  });
+  // We don't track per-question answers in this simple state, so just show total
+  return `<div style="color:var(--muted);font-size:.85rem;text-align:center">Review the topic sections to strengthen weaker areas. The flash cards and cheat sheet mode provide deeper coverage of each subject.</div>`;
+}
+
+function startQuiz() {
+  quizState = { idx:0, score:0, answered:false, active:true };
+  renderQuiz();
+}
+
+function endQuiz() {
+  quizState.active = false;
+  renderQuiz();
+}
+
+function answerQuiz(selected) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  const q = ALL_QUIZ[quizState.idx];
+  const isCorrect = selected === q.correct;
+  if (isCorrect) quizState.score++;
+  for (let i=0; i<q.opts.length; i++) {
+    const el = document.getElementById('opt_'+i);
+    el.classList.add('locked');
+    if (i === q.correct) el.classList.add('correct');
+    else if (i === selected && !isCorrect) el.classList.add('wrong');
+  }
+  document.getElementById('explanation').classList.add('visible');
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  quizState.idx++;
+  quizState.answered = false;
+  renderQuiz();
+}
+
+// ─── CHECKLIST ───────────────────────────────────────────────
+function renderChecklist() {
+  const lists = [
+    { title: "📁 Documents to Bring", items: ["Printed CV (2 copies)", "Certified copies of academic transcripts", "ID / Passport", "Professional references contact list", "Portfolio of any ICT projects (printed or digital)", "Any relevant certifications (CompTIA A+, CCNA, etc.)"] },
+    { title: "🎯 Key Topics to Final-Review Tonight", items: ["MEAL framework — all 4 components with examples", "OSI 7 layers — memorize layer names and examples", "ACID properties — be able to explain with database context", "KoboToolbox/ODK workflow — explain data collection to reporting pipeline", "CIA Triad — apply to beneficiary data scenario", "Subnetting basics — /24 = 254 hosts, /25 = 126", "DHIS2 and its role in Zimbabwe health reporting", "Theory of Change — inputs → activities → outputs → outcomes → impact", "3-2-1 Backup rule — be ready to implement it for NGO context", "Data quality dimensions — completeness, accuracy, timeliness, consistency"] },
+    { title: "💬 Scenario Answers to Prepare", items: ["'Describe how you would deploy tablets for field data collection'", "'A user cannot connect to the internet — walk me through troubleshooting'", "'How would you design a database for a nutrition program?'", "'What is MEAL and how does IT support it?'", "'How would you protect beneficiary data?'", "'A database query is slow — how do you optimize it?'", "'How would you handle power outages affecting your server?'"] },
+    { title: "🤝 Questions to Ask NAZ", items: ["What MDM solution does NAZ currently use for field devices?", "Which data collection tools are deployed — KoboToolbox, CommCare, ODK?", "Does NAZ report into DHIS2 or have a standalone database?", "What is the current network infrastructure at field offices?", "What does the onboarding process look like for this role?", "How does the ICT team collaborate with the MEAL team?"] },
+  ];
+  main.innerHTML = `
+    <div class="section-header">
+      <div class="section-label">Pre-Interview</div>
+      <div class="section-title">Assessment Day Checklist</div>
+      <div class="section-desc">Check off each item as you complete it. Preparation beyond technical knowledge — confidence, questions, and materials — often determines the outcome.</div>
+    </div>
+    ${lists.map((l,li) => `
+      <div class="cheat-section">
+        <div class="cheat-heading">${l.title}</div>
+        <ul class="checklist">
+          ${l.items.map((item, ii) => {
+            const key = `check_${li}_${ii}`;
+            const checked = checkedItems.has(key);
+            return `<li class="${checked?'checked':''}" id="li_${key}">
+              <input type="checkbox" ${checked?'checked':''} onchange="toggleCheck('${key}')">
+              <span>${item}</span>
+            </li>`;
+          }).join('')}
+        </ul>
+      </div>
+    `).join('')}
+    <div style="padding:1.5rem;background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.03));border:1px solid rgba(245,166,35,.2);border-radius:10px;margin-top:1rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--amber);margin-bottom:.5rem">⭐ Final Advice</div>
+      <p style="font-size:.85rem;color:var(--muted);line-height:1.8">Bridge every technical answer back to <strong style="color:var(--text)">impact on beneficiaries</strong>. NAZ wants an ICT professional who understands that the goal of every database, network, and device is to improve nutrition outcomes for communities. Say "this ensures field data reaches the M&E dashboard faster so program managers can identify SAM cases sooner" — not just "this improves data throughput." Context is everything.</p>
+    </div>
+  `;
+}
+
+function toggleCheck(key) {
+  const li = document.getElementById('li_'+key);
+  if (checkedItems.has(key)) { checkedItems.delete(key); li.classList.remove('checked'); }
+  else { checkedItems.add(key); li.classList.add('checked'); }
+}
+
+// ─── TIMER ───────────────────────────────────────────────────
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+  } else {
+    timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000);
+    timerRunning = true;
+  }
+  // Re-render overview to update button text
+  if (currentSection === 'overview') render();
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 0;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('timerDisplay');
+  if (!el) return;
+  const m = Math.floor(timerSeconds/60).toString().padStart(2,'0');
+  const s = (timerSeconds%60).toString().padStart(2,'0');
+  el.textContent = `${m}:${s}`;
+}
+
+// ─── INIT ────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICTD Interview Prep Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand">ICTD Prep</div>
+        <div class="header-progress" aria-label="Overall preparation progress">
+          <span id="overallProgressLabel">0%</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="overallProgressBar"></div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#planner">Planner</a>
+        <a href="#sprint">Timer</a>
+        <a href="#domains">Domains</a>
+        <a href="#reference">Reference</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#scenario">Scenarios</a>
+        <a href="#checklist">Checklist</a>
+        <a href="#sources">Sources</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero reveal" id="home">
+        <p class="eyebrow">Nutrition Action Zimbabwe Interview Tool</p>
+        <h1>Technical Assessment Command Center</h1>
+        <p class="lede">
+          Prepare for network administration, system support, ICT4D, database security,
+          hardware troubleshooting, and MEAL-aligned reporting with a single interactive
+          workflow.
+        </p>
+        <div class="hero-metrics">
+          <article>
+            <h2 id="readinessPercent">0%</h2>
+            <p>Readiness score</p>
+          </article>
+          <article>
+            <h2 id="weakestDomain">-</h2>
+            <p>Current weakest area</p>
+          </article>
+          <article>
+            <h2 id="quizBest">0</h2>
+            <p>Best quiz streak</p>
+          </article>
+          <article>
+            <h2 id="checklistDone">0%</h2>
+            <p>Checklist completion</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="planner">
+        <div class="panel-head">
+          <h2>Study Planner</h2>
+          <p>Set your interview date and available time to generate a focused prep plan.</p>
+        </div>
+        <div class="planner-grid">
+          <label>
+            Interview date
+            <input type="date" id="interviewDate" />
+          </label>
+          <label>
+            Hours/day
+            <input type="range" min="1" max="6" value="2" id="hoursPerDay" />
+            <span id="hoursPerDayValue">2 hours/day</span>
+          </label>
+          <label>
+            Priority focus
+            <select id="priorityFocus">
+              <option value="balanced">Balanced coverage</option>
+              <option value="database">Database and secure architecture</option>
+              <option value="network">Network and system support</option>
+              <option value="meal">MEAL and data reporting</option>
+            </select>
+          </label>
+          <button id="generatePlan">Generate Plan</button>
+        </div>
+        <ol id="studyPlan" class="study-plan"></ol>
+      </section>
+
+      <section class="panel reveal" id="sprint">
+        <div class="panel-head">
+          <h2>Focused Sprint Timer</h2>
+          <p>
+            Use timed practice blocks to simulate interview pressure. Recommended cycle: 25 minutes drill + 5 minutes recap.
+          </p>
+        </div>
+        <div class="timer-grid">
+          <article class="timer-card">
+            <p class="timer-label">Accumulated focus time</p>
+            <h3 id="timerDisplay">00:00:00</h3>
+          </article>
+          <div class="timer-controls">
+            <button id="toggleTimer">Start Timer</button>
+            <button id="resetTimer" class="ghost-btn">Reset</button>
+          </div>
+        </div>
+        <p class="muted">Practice strategy borrowed and refined: end each sprint by saying one scenario answer out loud in STAR format.</p>
+      </section>
+
+      <section class="panel reveal" id="domains">
+        <div class="panel-head">
+          <h2>Competency Domains</h2>
+          <p>Review expectations and self-rate each domain after practice.</p>
+        </div>
+        <div class="domain-tabs" id="domainTabs"></div>
+        <article class="domain-detail" id="domainDetail"></article>
+      </section>
+
+      <section class="panel reveal" id="skills">
+        <div class="panel-head">
+          <h2>Self-Assessment Matrix</h2>
+          <p>Update confidence levels to keep the readiness score realistic.</p>
+        </div>
+        <div id="skillMatrix" class="skill-matrix"></div>
+      </section>
+
+      <section class="panel reveal" id="reference">
+        <div class="panel-head">
+          <h2>Rapid Reference Grid</h2>
+          <p>High-frequency acronyms, formulas, and interview phrases you can recall quickly under pressure.</p>
+        </div>
+        <div id="referenceGrid" class="reference-grid"></div>
+      </section>
+
+      <section class="panel reveal" id="quiz">
+        <div class="panel-head">
+          <h2>Adaptive Quiz</h2>
+          <p>
+            Practice across all areas or filter by one domain. Explanations include what interviewers
+            usually expect in high-quality answers.
+          </p>
+        </div>
+        <div class="quiz-controls">
+          <label>
+            Mode
+            <select id="quizDomainSelect"></select>
+          </label>
+          <button id="startQuiz">Start / Reset Quiz</button>
+        </div>
+        <div class="quiz-box" id="quizBox">
+          <p class="muted">Click "Start / Reset Quiz" to begin.</p>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="scenario">
+        <div class="panel-head">
+          <h2>Scenario Simulator</h2>
+          <p>Draft your response and get rubric-style feedback across technical depth and MEAL alignment.</p>
+        </div>
+        <label>
+          Scenario
+          <select id="scenarioSelect"></select>
+        </label>
+        <textarea
+          id="scenarioResponse"
+          rows="8"
+          placeholder="Write how you would diagnose, secure, and report the issue..."
+        ></textarea>
+        <button id="scoreScenario">Score My Response</button>
+        <div id="scenarioFeedback" class="scenario-feedback"></div>
+      </section>
+
+      <section class="panel reveal" id="checklist">
+        <div class="panel-head">
+          <h2>Interview-Day Checklist</h2>
+          <p>Track preparation tasks, logistics, and strategic questions to ask the panel.</p>
+        </div>
+        <div class="check-progress">
+          <strong id="checkProgressLabel">0/0 completed</strong>
+          <div class="progress-track">
+            <div class="progress-fill" id="checkProgressBar"></div>
+          </div>
+        </div>
+        <div id="checklistGroups" class="checklist-groups"></div>
+        <article class="question-pack">
+          <h3>Smart Questions To Ask NAZ</h3>
+          <ul id="interviewerQuestions"></ul>
+        </article>
+      </section>
+
+      <section class="panel reveal" id="sources">
+        <div class="panel-head">
+          <h2>Research Sources</h2>
+          <p>Primary references used to build this tool's frameworks, drills, and best practices.</p>
+        </div>
+        <ul id="sourceList" class="sources"></ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Built for deliberate prep: strong fundamentals, clear communication, and evidence-backed
+        decisions in ICT for development settings.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
